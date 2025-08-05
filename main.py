@@ -77,19 +77,19 @@ class SudokuBoard :
                     given.append(idx)
         return color, given
 
-    def solveGraphColoring(self) : 
-        
+    def solveGraphColoring(self):  
         color, given = self.graphColoringInitializeColor()
-        if self.__graphColorUtility(color=color, v=1, given=given) is None :
-            print(":(")
-            return False
-        count = 1
-        for row in range(self._rows) : 
-            for col in range(self._cols) :
-                self.board[row][col] = color[count]
-                count += 1
-        return color
-    
+        if self.__graphColorUtility(color=color, v=1, given=given):
+            count = 1
+            for row in range(self._rows) : 
+                for col in range(self._cols) :
+                    self.board[row][col] = color[count]
+                    count += 1
+            return color
+        
+        print(":(")
+        return False
+        
     def __graphColorUtility(self, color, v, given) :
         
         if v == self.sudokuGraph.graph.totalV+1  : 
@@ -102,11 +102,13 @@ class SudokuBoard :
             if v not in given : 
                 color[v] = 0
 
+        return False
+
     def __isSafe2Color(self, v, color, c, given) : 
         
-        if v in given and color[v] == c: 
-            return True
-        elif v in given : 
+        if v in given:
+            if color[v] == c: 
+                return True
             return False
 
         for i in range(1, self.sudokuGraph.graph.totalV+1) :

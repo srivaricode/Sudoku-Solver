@@ -1,5 +1,5 @@
 from sudoku_connections import SudokuConnections
-from get_sudoku_board import getSudokuBoard
+from sudoku_board import getSudokuBoard
 from time import time
 
 class SudokuBoard : 
@@ -156,3 +156,4 @@ def main() :
 
 if __name__ == "__main__" : 
     main()
+

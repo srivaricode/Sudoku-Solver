@@ -1,13 +1,13 @@
 from graph import Graph
 
 class SudokuConnections : 
-    def __init__(self) :  # constructor
+    def __init__(self, m=9) :  # constructor
 
         self.graph = Graph() # Graph Object
-
-        self.rows = 9
-        self.cols = 9
-        self.total_blocks = self.rows*self.cols #81
+        self._rows = self._cols = m     # defines only square grid
+        # self._rows = _m
+        # self._cols = _m   
+        self.total_blocks = self._rows*self._cols #81 for m = 9
 
         self.__generateGraph() # Generates all the nodes
         self.connectEdges() # connects all the nodes acc to sudoku constraints
@@ -18,7 +18,7 @@ class SudokuConnections :
 
     def __generateGraph(self) : 
         """
-        Generates nodes with id from 1 to 81.
+        Generates nodes with id from 1 to total no of blocks.
         Both inclusive
         """
         for idx in range(1, self.total_blocks+1) : 
@@ -31,13 +31,13 @@ class SudokuConnections :
         # ROWS
 
        from start of each id number connect all the 
-       successive numbers till you reach a multiple of 9
+       successive numbers till you reach a multiple of m
 
 
-        # COLS (add 9 (+9))
+        # COLS (add m (+m))
 
-        from start of id number. +9 for each connection
-        till you reach a number >= 73 and <= 81
+        from start of id number. +m for each connection
+        till you reach a number >= m**2 - m + 1 and <= m**2
 
         # BLOCKS
         Connect all the elements in the block which do not 
@@ -56,8 +56,8 @@ class SudokuConnections :
 
         head_connections = dict() # head : connections
 
-        for row in range(9) :
-            for col in range(9) : 
+        for row in range(self._rows) :
+            for col in range(self._cols) : 
                 
                 head = matrix[row][col] #id of the node
                 connections = self.__whatToConnect(matrix, row, col)
@@ -96,18 +96,19 @@ class SudokuConnections :
         block = []
 
         # ROWS
-        for c in range(cols+1, 9) : 
+        for c in range(cols+1, self._cols) : 
             row.append(matrix[rows][c])
         
         connections["rows"] = row
 
         # COLS 
-        for r in range(rows+1, 9):
+        for r in range(rows+1, self._rows):
             col.append(matrix[r][cols])
         
         connections["cols"] = col
 
         # BLOCKS
+        # TO DO: replace 3 with sqaure root of m
         
         if rows%3 == 0 : 
 
@@ -183,17 +184,17 @@ class SudokuConnections :
 
     def __getGridMatrix(self) : 
         """
-        Generates the 9x9 grid or matrix consisting of node ids.
+        Generates the mxm grid or matrix consisting of node ids.
         
         This matrix will act as amapper of each cell with each node 
         through node ids
         """
-        matrix = [[0 for cols in range(self.cols)] 
-        for rows in range(self.rows)]
+        matrix = [[0 for _ in range(self._cols)] 
+        for _ in range(self._rows)]
 
         count = 1
-        for rows in range(9) :
-            for cols in range(9):
+        for rows in range(self._rows) :
+            for cols in range(self._cols):
                 matrix[rows][cols] = count
                 count+=1
         return matrix

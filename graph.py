@@ -44,11 +44,12 @@ class Graph :
 
     totalV = 0 # total vertices in the graph
     
-    def __init__(self) : 
+    def __init__(self, m=9) : 
         """
         allNodes = Dictionary (key:value)
                    idx : Node Object
         """
+        self._m = m
         self.allNodes = dict()
 
     def addNode(self, idx) : 

@@ -1,15 +1,22 @@
 from sudoku_connections import SudokuConnections
+from get_sudoku_board import getSudokuBoard
 from time import time
 
 class SudokuBoard : 
-    def __init__(self, m=9) : 
+    def __init__(self, difficulty="easy", m=9) : 
         self._m = self._rows = self._cols = m # defines only square grid
-        self.board = self.getBoard()
+        self.board, self._solution = self.getBoard(difficulty)
         
         self.sudokuGraph = SudokuConnections()
         self.mappedGrid = self.__getMappedMatrix() # Maps all the ids to the position in the matrix
 
     def __getMappedMatrix(self) : 
+        """
+        Generates the mxm grid or matrix consisting of node ids.
+        
+        This matrix will act as amapper of each cell with each node 
+        through node ids
+        """
         matrix = [[0 for _ in range(self._cols)] 
         for _ in range(self._rows)]
 
@@ -20,24 +27,29 @@ class SudokuBoard :
                 count+=1
         return matrix
 
-    def getBoard(self) : 
-
-        board = [
-            [0,0,0,4,0,0,0,0,0],
-            [4,0,9,0,0,6,8,7,0],
-            [0,0,0,9,0,0,1,0,0],
-            [5,0,4,0,2,0,0,0,9],
-            [0,7,0,8,0,4,0,6,0],
-            [6,0,0,0,3,0,5,0,2],
-            [0,0,1,0,0,7,0,0,0],
-            [0,4,3,2,0,0,6,0,5],
-            [0,0,0,0,0,5,0,0,0]
-        ]
-        return board
+    def getBoard(self, difficulty="easy") : 
+        board, solution = getSudokuBoard().getBoardFromAPI(difficulty=difficulty)
+        if board:
+            pass
+        else:
+            board = [
+                [0,0,0,4,0,0,0,0,0],
+                [4,0,9,0,0,6,8,7,0],
+                [0,0,0,9,0,0,1,0,0],
+                [5,0,4,0,2,0,0,0,9],
+                [0,7,0,8,0,4,0,6,0],
+                [6,0,0,0,3,0,5,0,2],
+                [0,0,1,0,0,7,0,0,0],
+                [0,4,3,2,0,0,6,0,5],
+                [0,0,0,0,0,5,0,0,0]
+            ]
+            solution = None
+        return board, solution
+        
 
     def printBoard(self) : 
 
-        #TO DO: Replace 3 with square root of m
+        #TODO: Replace 3 with square root of m
         
         print("    1 2 3     4 5 6     7 8 9")
         for i in range(len(self.board)) : 
@@ -89,9 +101,18 @@ class SudokuBoard :
         
         print(":(")
         return False
+    
+    def checkSolution(self):
+        '''Check whether solution is correct'''
+        for i in range(self._rows):
+            for j in range(self._cols):
+                if self.board[i][j] != self._solution[i][j]:
+                    print("Solution incorrect :(")
+                    return
+        print("Solution is correct!")
         
     def __graphColorUtility(self, color, v, given) :
-        
+        '''Run graph coloring on given nodes'''
         if v == self.sudokuGraph.graph.totalV+1  : 
             return True
         for c in range(1, self._m+1) : 
@@ -125,11 +146,13 @@ def main() :
     print("\nSolving ...")
     print("\n\n\nAFTER SOLVING ...")
     print("\n\n")
-    start = time()
+    # start = time()
     s.solveGraphColoring()
-    end = time()
+    # end = time()
     s.printBoard()
-    print("Execution time of Graph coloring: {}".format(end-start))
+    # print("Execution time of Graph coloring: {}".format(end-start))
+    s.checkSolution()
+
 
 if __name__ == "__main__" : 
     main()

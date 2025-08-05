@@ -92,7 +92,9 @@ class Graph :
                 return True
         return False
 
-
+    def getNeighbours(self, u):
+        if u in self.allNodes.keys():
+            return self.allNodes[u].getConnections()
 
     def printEdges(self) : 
         """ print all edges """

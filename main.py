@@ -1,5 +1,5 @@
 from sudoku_connections import SudokuConnections
-
+from time import time
 
 class SudokuBoard : 
     def __init__(self, m=9) : 
@@ -111,8 +111,8 @@ class SudokuBoard :
                 return True
             return False
 
-        for i in range(1, self.sudokuGraph.graph.totalV+1) :
-            if color[i] == c and self.sudokuGraph.graph.isNeighbour(v, i) :
+        for nb in self.sudokuGraph.graph.getNeighbours(v):
+            if color[nb] == c:
                 return False
         return True
 
@@ -125,8 +125,11 @@ def main() :
     print("\nSolving ...")
     print("\n\n\nAFTER SOLVING ...")
     print("\n\n")
+    start = time()
     s.solveGraphColoring()
+    end = time()
     s.printBoard()
+    print("Execution time of Graph coloring: {}".format(end-start))
 
 if __name__ == "__main__" : 
     main()

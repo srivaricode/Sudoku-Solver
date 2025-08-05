@@ -1,6 +1,6 @@
 # Sudoku-Solver-Graph-Coloring
 
-BLOG POST of original project - https://medium.com/code-science/sudoku-solver-graph-coloring-8f1b4df47072
+BLOG POST of original project by [Ishaan Gupta](https://www.github.com/Ishaan97/) - https://medium.com/code-science/sudoku-solver-graph-coloring-8f1b4df47072
 
 ### Key modifications
 * Consistent use of `m=9` to promote variable board size
